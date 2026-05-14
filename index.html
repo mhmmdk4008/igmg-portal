@@ -465,10 +465,6 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
         <p>Lütfen teşkilatınızı seçin</p>
       </div>
       <div class="kat-grid" id="kat-grid"></div>
-      <button class="btn-new-city" onclick="setScreen('city-request');$('req-igmg-logo').src=IGMG_LOGO">
-        <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Yeni Şehir Talep Et
-      </button>
 
       <div class="support-footer">
         <button class="support-trigger" onclick="toggleSupport(this)">
@@ -503,7 +499,7 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
 <div id="screen-city-request" class="screen">
   <div style="min-height:100vh;background:linear-gradient(180deg,#f9fafb 0%,#f0fdf4 100%)">
     <div class="req-wrap">
-      <button class="req-back" onclick="setScreen('kategori')">
+      <button class="req-back" onclick="$('req-org').disabled=false;setScreen('sube')">
         <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
         Geri
       </button>
@@ -553,6 +549,10 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
         <p>Devam etmek için şubenizi seçin</p>
       </div>
       <div class="sube-grid" id="sube-grid"></div>
+      <button class="btn-new-city" style="margin-top:16px" onclick="openCityRequest()">
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Yeni Şehir Talep Et
+      </button>
     </div>
     <div class="support-footer">
       <button class="support-trigger" onclick="toggleSupport(this)">
@@ -1359,6 +1359,18 @@ function selectKategori(code){
 }
 
 function backToKategori(){currentKat=null;setScreen('kategori')}
+function openCityRequest(){
+  $('req-igmg-logo').src=IGMG_LOGO;
+  if(currentKat){
+    const map={'AT':'Ana Teşkilat (AT)','GT':'Gençlik Teşkilatı (GT)','KT':'Kadınlar Teşkilatı (KT)','KGT':'Kadınlar Gençlik Teşkilatı (KGT)'};
+    $('req-org').value=map[currentKat.code]||'';
+    $('req-org').disabled=true;
+  } else {
+    $('req-org').value='';
+    $('req-org').disabled=false;
+  }
+  setScreen('city-request');
+}
 
 async function loadSubeler(){
   showLoading('Şubeler yükleniyor...');
