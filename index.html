@@ -1423,14 +1423,7 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
       <div class="field"><label>Yönetici</label><select id="ceza-mem" class="if"></select></div>
       <div class="field">
         <label>Ceza Sebebi</label>
-        <select id="ceza-reason" class="if" onchange="onCezaReasonChange()">
-          <option value="5|Toplantıya gecikilmesi">Toplantıya gecikilmesi (5 €)</option>
-          <option value="15|Mazeretsiz gelmemezlik">Mazeretsiz gelmemezlik (15 €)</option>
-          <option value="2|Dosya unutulması">Dosya unutulması (2 €)</option>
-          <option value="5|Toplantıda Telefon Çalması">Telefon çalması (5 €)</option>
-          <option value="50|Kur'an-ı Kerim okumama">Kur'an okumama (50 €)</option>
-          <option value="custom|">Özel sebep...</option>
-        </select>
+        <select id="ceza-reason" class="if" onchange="onCezaReasonChange()"></select>
       </div>
       <div id="ceza-custom-fields" style="display:none">
         <div class="field"><label>Özel Sebep</label><input type="text" id="ceza-custom-reason" class="if" placeholder="Sebep..."></div>
@@ -1924,9 +1917,12 @@ async function saveMember(){
     const maxSort=Math.max(0,...yoneticiler.map(y=>y.sort_order||0));
     const {error}=await sb.from('yoneticiler').insert({gruppe_id:currentSube.id,name,role:role||'Üye',phone,sort_order:maxSort+1});
     if(error)throw error;
+    const {data:yData}=await sb.from('yoneticiler').select('*').eq('gruppe_id',currentSube.id).order('sort_order');
+    yoneticiler=yData||[];
     hideLoading();
     closeModal('add-member');
     $('m-name').value='';$('m-role').value='';$('m-phone').value='';
+    renderMembers();
     toast(name+' eklendi.');
   }catch(e){
     hideLoading();
@@ -1951,6 +1947,8 @@ async function updateMember(){
   try{
     const {error}=await sb.from('yoneticiler').update({name,role,phone}).eq('id',id);
     if(error)throw error;
+    const m=yoneticiler.find(x=>x.id===id);if(m){m.name=name;m.role=role;m.phone=phone;}
+    renderMembers();
     hideLoading();closeModal('edit-member');toast('Güncellendi.');
   }catch(e){hideLoading();toast('Hata: '+(e.message||'Bilinmeyen'),true)}
 }
@@ -1963,6 +1961,8 @@ async function deleteMember(id){
   try{
     const {error}=await sb.from('yoneticiler').delete().eq('id',id);
     if(error)throw error;
+    yoneticiler=yoneticiler.filter(x=>x.id!==id);
+    renderMembers();
     hideLoading();toast(y.name+' silindi.');
   }catch(e){hideLoading();toast('Hata: '+(e.message||'Bilinmeyen'),true)}
 }
@@ -2669,10 +2669,16 @@ function fmtMoney(n){return Number(n).toLocaleString('de-DE',{minimumFractionDig
 
 function openAddCeza(){
   $('ceza-mem').innerHTML=yoneticiler.map(m=>`<option value="${esc(m.name)}">${esc(m.name)}</option>`).join('');
-  $('ceza-reason').value='5|Toplantıya gecikilmesi';
+  const reasonSel=$('ceza-reason');
+  if(cezaSablonlar.length){
+    reasonSel.innerHTML=cezaSablonlar.map(s=>`<option value="${s.amount}|${esc(s.name)}">${esc(s.name)} (${Number(s.amount).toFixed(2)} €)</option>`).join('')+'<option value="custom|">Özel sebep...</option>';
+  }else{
+    reasonSel.innerHTML='<option value="custom|">Özel sebep...</option>';
+  }
   $('ceza-custom-fields').style.display='none';
   $('ceza-custom-reason').value='';$('ceza-custom-amt').value='';
   $('ceza-date').value=new Date().toISOString().split('T')[0];
+  onCezaReasonChange();
   openModal('add-ceza');
 }
 
