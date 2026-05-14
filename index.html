@@ -617,8 +617,35 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
           <button class="adm-filter-btn" onclick="filterAdminCities('KT',this)">KT</button>
           <button class="adm-filter-btn" onclick="filterAdminCities('KGT',this)">KGT</button>
         </div>
+        <button class="btn bp bf" style="margin-bottom:12px;font-size:.88rem" onclick="openAddCityModal()">+ Yeni Şehir Ekle</button>
         <div id="admin-cities-list"></div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN ADD CITY MODAL -->
+<div class="mbg" id="modal-add-city">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-h"><h3>Yeni Şehir Ekle</h3><div class="sub">Şehri doğrudan sisteme ekleyin</div></div>
+    <div class="modal-body">
+      <div class="field"><label>Şehir Adı</label><input type="text" id="add-city-name" class="if" placeholder="Örn: Berlin..."></div>
+      <div class="field"><label>Teşkilat</label>
+        <select id="add-city-org" class="if">
+          <option value="AT">Ana Teşkilat (AT)</option>
+          <option value="GT">Gençlik Teşkilatı (GT)</option>
+          <option value="KT">Kadınlar Teşkilatı (KT)</option>
+          <option value="KGT">Kadınlar Gençlik Teşkilatı (KGT)</option>
+        </select>
+      </div>
+      <div class="field"><label>Başkan Şifresi</label><input type="text" id="add-city-pw" class="if" placeholder="Başkan şifresi..."></div>
+      <div class="field"><label>Üye Şifresi <span style="font-weight:400;color:var(--txt3)">(opsiyonel)</span></label><input type="text" id="add-city-member-pw" class="if" placeholder="Üye şifresi (boş bırakılabilir)..."></div>
+      <div id="add-city-err" class="le"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn bo" onclick="closeModal('add-city')">İptal</button>
+      <button class="btn bp" onclick="saveNewCity()">Ekle</button>
     </div>
   </div>
 </div>
@@ -2755,6 +2782,35 @@ async function saveEditCity(){
     if(error)throw error;
     hideLoading();closeModal('edit-city');
     toast('Şifreler güncellendi.');
+    loadAdminCities();
+  }catch(e){hideLoading();toast('Hata: '+e.message,true)}
+}
+
+function openAddCityModal(){
+  $('add-city-name').value='';$('add-city-pw').value='';$('add-city-member-pw').value='';
+  $('add-city-org').value='AT';
+  $('add-city-err').style.display='none';
+  openModal('add-city');
+}
+
+async function saveNewCity(){
+  const name=$('add-city-name').value.trim();
+  const org=$('add-city-org').value;
+  const pw=$('add-city-pw').value.trim();
+  const memberPw=$('add-city-member-pw').value.trim();
+  const errEl=$('add-city-err');
+  errEl.style.display='none';
+  if(!name){errEl.textContent='Şehir adı boş olamaz.';errEl.style.display='block';return}
+  if(!pw){errEl.textContent='Başkan şifresi boş olamaz.';errEl.style.display='block';return}
+  const katMap={'AT':null,'GT':null,'KT':null,'KGT':null};
+  const {data:kats}=await sb.from('kategoriler').select('id,code').in('code',[org]);
+  const katId=kats&&kats[0]?kats[0].id:null;
+  showLoading('Şehir ekleniyor...');
+  try{
+    const {error}=await sb.from('gruppen').insert({name,kategorie_id:katId,password_hash:pw,member_password:memberPw||null});
+    if(error)throw error;
+    hideLoading();closeModal('add-city');
+    toast(name+' başarıyla eklendi.');
     loadAdminCities();
   }catch(e){hideLoading();toast('Hata: '+e.message,true)}
 }
