@@ -188,7 +188,7 @@ button{font-family:inherit}
 .support-wa-btn svg{width:14px;height:14px}
 
 
-.role-uye .member-actions{display:none !important}.role-uye #yonetim-add-btn{display:none !important}.role-uye #bilgi-next-meeting-btn{display:none !important}.role-uye #bilgi-add-note-btn{display:none !important}.role-uye #menu-changepw-btn{display:none !important}
+.role-uye .member-actions{display:none !important}.role-uye #yonetim-add-btn{display:none !important}.role-uye #bilgi-next-meeting-btn{display:none !important}.role-uye #bilgi-add-note-btn{display:none !important}
 
 /* === SECTION & LIST CARDS === */
 .section-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
@@ -452,37 +452,6 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
 .req-card .field{margin-bottom:14px}
 .req-card .field label{display:block;font-size:.78rem;font-weight:700;color:var(--txt2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
 .version{position:fixed;bottom:4px;left:8px;font-size:10px;color:var(--txt3);opacity:.4;font-family:ui-monospace,monospace;pointer-events:none;z-index:10}
-.admin-login-link{display:block;text-align:center;margin-top:18px;font-size:11px;color:var(--txt3);cursor:pointer;padding:6px;border-radius:8px;transition:all .15s;background:transparent;border:none;font-family:inherit;font-weight:500}
-.admin-login-link:hover{color:var(--txt2);background:#f1f5f9}
-.adm-req-card{background:var(--surf);border:1px solid var(--bord);border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm)}
-.adm-req-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap}
-.adm-req-name{font-size:1rem;font-weight:800;color:var(--txt)}
-.adm-req-badge{font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap}
-.adm-req-badge.pending{background:#fef3c7;color:#b45309}
-.adm-req-badge.approved{background:#dcfce7;color:#15803d}
-.adm-req-badge.rejected{background:#fee2e2;color:#b91c1c}
-.adm-req-info{margin-top:8px;display:grid;gap:4px}
-.adm-req-row{font-size:.82rem;color:var(--txt2);display:flex;gap:6px}
-.adm-req-row strong{color:var(--txt);font-weight:700;min-width:80px}
-.adm-req-actions{display:flex;gap:8px;margin-top:12px}
-.btn-approve{background:#dcfce7;color:#15803d;border:none;border-radius:8px;padding:9px 14px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;flex:1;transition:all .15s}
-.btn-approve:hover{background:#bbf7d0}
-.btn-reject{background:#fee2e2;color:#b91c1c;border:none;border-radius:8px;padding:9px 14px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;flex:1;transition:all .15s}
-.btn-reject:hover{background:#fecaca}
-.adm-empty{text-align:center;padding:48px 20px;color:var(--txt3);font-size:.9rem}
-.adm-empty strong{display:block;color:var(--txt2);font-size:1rem;margin-bottom:6px}
-.adm-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-.adm-filter-btn{padding:6px 14px;border:1.5px solid var(--bord);border-radius:20px;background:var(--surf);font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;color:var(--txt2)}
-.adm-filter-btn.active{border-color:var(--p);background:var(--pp);color:var(--p)}
-.adm-tab-btn{background:transparent;border:none;padding:14px 18px;font-size:.88rem;font-weight:600;color:var(--txt3);cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px;transition:all .15s;font-family:inherit}
-.adm-tab-btn:hover{color:var(--txt)}
-.adm-tab-active{color:var(--p) !important;border-bottom-color:var(--p) !important}
-.adm-city-row{background:var(--surf);border:1px solid var(--bord);border-radius:12px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)}
-.adm-city-avatar{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;color:#fff;flex-shrink:0}
-.adm-city-info{flex:1;min-width:0}
-.adm-city-name{font-size:.95rem;font-weight:700;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.adm-city-meta{font-size:.75rem;color:var(--txt3);margin-top:2px}
-.adm-city-pw{font-size:.78rem;font-family:monospace;background:#f1f5f9;padding:3px 8px;border-radius:6px;color:var(--txt2);flex-shrink:0}
 </style>
 </head>
 <body>
@@ -492,13 +461,14 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
   <div class="scr-kat">
     <div class="scr-kat-inner">
       <div class="kat-hero">
-        <div id="kat-logo-tap" onclick="onKatLogoTap()" style="display:inline-block;cursor:default;margin-bottom:14px;user-select:none">
-          <img src="" id="kat-igmg-logo" style="height:64px;width:auto" alt="">
-        </div>
         <h1>Yönetim Portalı</h1>
         <p>Lütfen teşkilatınızı seçin</p>
       </div>
       <div class="kat-grid" id="kat-grid"></div>
+      <button class="btn-new-city" onclick="setScreen('city-request');$('req-igmg-logo').src=IGMG_LOGO">
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Yeni Şehir Talep Et
+      </button>
 
       <div class="support-footer">
         <button class="support-trigger" onclick="toggleSupport(this)">
@@ -530,91 +500,10 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
 
 <!-- SCREEN 2: SUBE -->
 <!-- SCREEN: YENİ ŞEHİR TALEBİ -->
-<!-- SCREEN: SİSTEM YÖNETİMİ GİRİŞ -->
-<div id="screen-admin-login" class="screen">
-  <div style="min-height:100vh;background:linear-gradient(180deg,#f9fafb 0%,#fff 100%);display:flex;flex-direction:column;padding:24px">
-    <button class="req-back" onclick="setScreen('kategori')" style="margin-bottom:0">
-      <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-      Geri
-    </button>
-    <div style="flex:1;display:flex;align-items:center;justify-content:center">
-      <div class="pw-card">
-        <div class="pw-logo" style="width:72px;height:72px;background:linear-gradient(135deg,#064e3b,#059669)">
-          <svg fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" style="width:32px;height:32px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-        </div>
-        <h2>Sistem Yönetimi</h2>
-        <p class="sub">Yönetici şifresini girin</p>
-        <input type="password" id="adminPwInput" class="if" placeholder="Şifre..." autocomplete="off" onkeydown="if(event.key==='Enter')adminLogin()">
-        <div id="adminPwErr" class="le">Hatalı şifre.</div>
-        <div style="height:14px"></div>
-        <button class="btn bp bf" onclick="adminLogin()">Giriş Yap</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SCREEN: SİSTEM YÖNETİMİ PANELİ -->
-<div id="screen-admin" class="screen">
-  <header class="app-header">
-    <div class="app-header-l">
-      <button class="back-btn" onclick="setScreen('kategori')">‹</button>
-      <div class="app-header-info">
-        <div class="app-header-pretitle">Sistem</div>
-        <div class="app-header-title">Yönetim Paneli</div>
-      </div>
-    </div>
-    <div class="app-header-c">
-      <img src="" id="admin-igmg-logo" class="app-header-igmg" alt="IGMG">
-    </div>
-    <div class="app-header-r"></div>
-  </header>
-  <!-- Tab bar -->
-  <div style="background:#fff;border-bottom:1px solid var(--bord);display:flex;gap:0;padding:0 16px">
-    <button id="adm-tab-talepler" class="adm-tab-btn adm-tab-active" onclick="switchAdminTab('talepler')">Şehir Talepleri</button>
-    <button id="adm-tab-sehirler" class="adm-tab-btn" onclick="switchAdminTab('sehirler')">Şehirler</button>
-  </div>
-  <div class="page-wrap" style="max-width:720px">
-    <div class="page-content">
-
-      <!-- TAB: Talepler -->
-      <div id="adm-panel-talepler">
-        <div class="page-h" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:8px">
-          <div><h2>Şehir Talepleri</h2><p>Gelen yeni şehir başvuruları</p></div>
-          <button class="btn bg bsm" onclick="loadAdminRequests()">↻ Yenile</button>
-        </div>
-        <div class="adm-filter-bar">
-          <button class="adm-filter-btn active" onclick="filterAdminRequests('pending',this)">Bekleyen</button>
-          <button class="adm-filter-btn" onclick="filterAdminRequests('approved',this)">Onaylanan</button>
-          <button class="adm-filter-btn" onclick="filterAdminRequests('rejected',this)">Reddedilen</button>
-          <button class="adm-filter-btn" onclick="filterAdminRequests('all',this)">Tümü</button>
-        </div>
-        <div id="admin-requests-list"></div>
-      </div>
-
-      <!-- TAB: Şehirler -->
-      <div id="adm-panel-sehirler" style="display:none">
-        <div class="page-h" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:8px">
-          <div><h2>Tüm Şehirler</h2><p>Sistemdeki tüm şubeler</p></div>
-          <button class="btn bg bsm" onclick="loadAdminCities()">↻ Yenile</button>
-        </div>
-        <div class="adm-filter-bar" id="adm-city-filter-bar">
-          <button class="adm-filter-btn active" onclick="filterAdminCities('all',this)">Tümü</button>
-          <button class="adm-filter-btn" onclick="filterAdminCities('AT',this)">AT</button>
-          <button class="adm-filter-btn" onclick="filterAdminCities('GT',this)">GT</button>
-          <button class="adm-filter-btn" onclick="filterAdminCities('KT',this)">KT</button>
-          <button class="adm-filter-btn" onclick="filterAdminCities('KGT',this)">KGT</button>
-        </div>
-        <div id="admin-cities-list"></div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
 <div id="screen-city-request" class="screen">
   <div style="min-height:100vh;background:linear-gradient(180deg,#f9fafb 0%,#f0fdf4 100%)">
     <div class="req-wrap">
-      <button class="req-back" onclick="setScreen('sube')">
+      <button class="req-back" onclick="setScreen('kategori')">
         <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
         Geri
       </button>
@@ -664,10 +553,6 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
         <p>Devam etmek için şubenizi seçin</p>
       </div>
       <div class="sube-grid" id="sube-grid"></div>
-      <button class="btn-new-city" style="margin-top:16px" onclick="openCityRequest()">
-        <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Yeni Şehir Talep Et
-      </button>
     </div>
     <div class="support-footer">
       <button class="support-trigger" onclick="toggleSupport(this)">
@@ -761,7 +646,6 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
     </div>
     <div class="app-header-r">
       <span class="conn-dot" id="connDot2"></span>
-      <button id="menu-changepw-btn" class="btn bg bsm" onclick="openModal('change-pw')" style="font-size:.78rem">🔑 Şifre</button>
       <button class="btn bg bsm" onclick="logout()">Çıkış</button>
     </div>
   </header>
@@ -986,31 +870,6 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654z"/></svg>
           WhatsApp Mesaj Gönder
         </a></div>
-  </div>
-</div>
-
-<!-- ADMIN EDIT CITY MODAL -->
-<div class="mbg" id="modal-edit-city">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-h">
-      <h3 id="edit-city-title">Şehir Düzenle</h3>
-      <p class="sub" id="edit-city-sub"></p>
-    </div>
-    <div class="modal-body">
-      <div class="field" style="margin-bottom:14px">
-        <label style="display:block;font-size:.78rem;font-weight:700;color:var(--txt2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em">Başkan Şifresi</label>
-        <input type="text" id="edit-city-pw" class="if" placeholder="Başkan şifresi...">
-      </div>
-      <div class="field" style="margin-bottom:4px">
-        <label style="display:block;font-size:.78rem;font-weight:700;color:var(--txt2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em">Üye Şifresi <span style="font-weight:500;text-transform:none">(opsiyonel)</span></label>
-        <input type="text" id="edit-city-member-pw" class="if" placeholder="Üye şifresi (boş bırakılabilir)...">
-      </div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn bg" onclick="$('modal-edit-city').classList.remove('op')">İptal</button>
-      <button class="btn bp" onclick="saveEditCity()">Kaydet</button>
-    </div>
   </div>
 </div>
 
@@ -1399,24 +1258,6 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
   </div>
 </div>
 
-<!-- CHANGE PASSWORD MODAL -->
-<div class="mbg" id="modal-change-pw">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-h"><h3>Şifremi Değiştir</h3><div class="sub">Mevcut şifrenizi doğrulayın ve yeni şifrenizi belirleyin</div></div>
-    <div class="modal-body">
-      <div class="field"><label>Mevcut Şifre</label><input type="password" id="cpw-current" class="if" placeholder="Mevcut şifreniz..." autocomplete="off"></div>
-      <div class="field"><label>Yeni Şifre</label><input type="password" id="cpw-new" class="if" placeholder="Yeni şifre..." autocomplete="new-password"></div>
-      <div class="field"><label>Yeni Şifre (Tekrar)</label><input type="password" id="cpw-confirm" class="if" placeholder="Yeni şifre tekrar..." autocomplete="new-password"></div>
-      <div id="cpw-err" class="le"></div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn bo" onclick="closeModal('change-pw')">İptal</button>
-      <button class="btn bp" onclick="changePassword()">Değiştir</button>
-    </div>
-  </div>
-</div>
-
 
 <div class="loading-screen" id="loading">
   <div class="loading-box"><div class="spin"></div><span id="loadingMsg">Yükleniyor...</span></div>
@@ -1465,7 +1306,6 @@ function closeSupport(btn){btn.closest('.support-box').classList.remove('open')}
 
 async function loadKategoriler(){
   try{
-    if($('kat-igmg-logo'))$('kat-igmg-logo').src=IGMG_LOGO;
     const {data,error}=await sb.from('kategoriler').select('*').order('sort_order');
     if(error)throw error;
     kategoriler=data||[];
@@ -1556,28 +1396,6 @@ async function pwLogin(){
     currentSube=data;currentRole=role;
     saveSession({sube_id:data.id,kat:currentKat.code,role});
     hideLoading();enterApp();
-  }catch(e){hideLoading();toast('Hata: '+(e.message||'Bilinmeyen'),true)}
-}
-
-async function changePassword(){
-  const cur=$('cpw-current').value.trim();
-  const nw=$('cpw-new').value.trim();
-  const conf=$('cpw-confirm').value.trim();
-  const errEl=$('cpw-err');
-  errEl.style.display='none';
-  if(!cur||!nw||!conf){errEl.textContent='Tüm alanları doldurun.';errEl.style.display='block';return}
-  if(nw!==conf){errEl.textContent='Yeni şifreler eşleşmiyor.';errEl.style.display='block';return}
-  if(nw.length<4){errEl.textContent='Yeni şifre en az 4 karakter olmalı.';errEl.style.display='block';return}
-  if(cur!==currentSube.password_hash){errEl.textContent='Mevcut şifre yanlış.';errEl.style.display='block';return}
-  showLoading('Şifre güncelleniyor...');
-  try{
-    const {error}=await sb.from('gruppen').update({password_hash:nw}).eq('id',currentSube.id);
-    if(error)throw error;
-    currentSube.password_hash=nw;
-    saveSession({sube_id:currentSube.id,kat:currentKat.code,role:currentRole});
-    hideLoading();closeModal('change-pw');
-    $('cpw-current').value='';$('cpw-new').value='';$('cpw-confirm').value='';
-    toast('Şifre başarıyla güncellendi.');
   }catch(e){hideLoading();toast('Hata: '+(e.message||'Bilinmeyen'),true)}
 }
 
@@ -2532,20 +2350,6 @@ async function deleteCeza(id){
   }catch(e){hideLoading();toast('Hata: '+(e.message||'Bilinmeyen'),true)}
 }
 
-function openCityRequest(){
-  $('req-igmg-logo').src=IGMG_LOGO;
-  $('req-name').value='';
-  $('req-contact').value='';
-  $('req-phone').value='';
-  $('req-pw').value='';
-  $('req-err').style.display='none';
-  if(currentKat){
-    const orgMap={'AT':'Ana Teşkilat (AT)','GT':'Gençlik Teşkilatı (GT)','KT':'Kadınlar Teşkilatı (KT)','KGT':'Kadınlar Gençlik Teşkilatı (KGT)'};
-    $('req-org').value=orgMap[currentKat.code]||'';
-  }
-  setScreen('city-request');
-}
-
 async function submitCityRequest(){
   const name=$('req-name').value.trim();
   const org=$('req-org').value;
@@ -2566,253 +2370,14 @@ async function submitCityRequest(){
     hideLoading();
     $('req-name').value='';$('req-org').value='';$('req-contact').value='';$('req-phone').value='';$('req-pw').value='';
     toast('Talebiniz iletildi! En kısa sürede dönüş yapılacak.');
-    setScreen('sube');
+    setScreen('kategori');
   }catch(e){
     hideLoading();
     err.textContent='Hata: '+(e.message||e);err.style.display='block';
   }
 }
 document.querySelectorAll('.mbg').forEach(bg=>bg.addEventListener('click',e=>{if(e.target===bg)bg.classList.remove('op')}))
-function applyRoleUI(){document.body.classList.toggle('role-uye',currentRole==='uye');}
-
-/* ======== SUPERADMIN ======== */
-const ADMIN_PW='igmg-super-2026';
-let adminFilterStatus='pending';
-let _katLogoTaps=0,_katLogoTimer=null;
-
-function onKatLogoTap(){
-  _katLogoTaps++;
-  clearTimeout(_katLogoTimer);
-  _katLogoTimer=setTimeout(()=>{_katLogoTaps=0},1500);
-  if(_katLogoTaps>=5){_katLogoTaps=0;openAdminLogin();}
-}
-
-function openAdminLogin(){
-  $('adminPwInput').value='';
-  $('adminPwErr').style.display='none';
-  setScreen('admin-login');
-}
-
-function switchAdminTab(tab){
-  ['talepler','sehirler'].forEach(t=>{
-    $('adm-panel-'+t).style.display=t===tab?'block':'none';
-    $('adm-tab-'+t).classList.toggle('adm-tab-active',t===tab);
-  });
-  if(tab==='sehirler')loadAdminCities();
-}
-
-function adminLogin(){
-  const pw=$('adminPwInput').value;
-  if(pw===ADMIN_PW){
-    $('admin-igmg-logo').src=IGMG_LOGO;
-    setScreen('admin');
-    switchAdminTab('talepler');
-    loadAdminRequests();
-  } else {
-    $('adminPwErr').style.display='block';
-    $('adminPwInput').value='';
-    $('adminPwInput').focus();
-  }
-}
-
-async function loadAdminRequests(){
-  const list=$('admin-requests-list');
-  list.innerHTML='<div class="adm-empty"><strong>Yükleniyor...</strong></div>';
-  try{
-    const {data,error}=await sb.from('city_requests').select('*').order('created_at',{ascending:false});
-    if(error)throw error;
-    window._adminAllRequests=data||[];
-    renderAdminRequests();
-  }catch(e){
-    list.innerHTML=`<div class="adm-empty"><strong>Hata</strong>${e.message}</div>`;
-  }
-}
-
-function filterAdminRequests(status,btn){
-  adminFilterStatus=status;
-  document.querySelectorAll('.adm-filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderAdminRequests();
-}
-
-function renderAdminRequests(){
-  const list=$('admin-requests-list');
-  const all=window._adminAllRequests||[];
-  const filtered=adminFilterStatus==='all'?all:all.filter(r=>r.status===adminFilterStatus);
-  if(!filtered.length){
-    const labels={pending:'bekleyen',approved:'onaylanan',rejected:'reddedilen',all:'kayıt'};
-    list.innerHTML=`<div class="adm-empty"><strong>Kayıt yok</strong>Bu kategoride ${labels[adminFilterStatus]||''} talep bulunamadı.</div>`;
-    return;
-  }
-  list.innerHTML=filtered.map(r=>{
-    const date=r.created_at?new Date(r.created_at).toLocaleDateString('tr-TR'):'';
-    const isPending=r.status==='pending';
-    return `<div class="adm-req-card">
-      <div class="adm-req-header">
-        <div class="adm-req-name">${r.city_name||'—'}</div>
-        <span class="adm-req-badge ${r.status||'pending'}">${r.status==='approved'?'Onaylandı':r.status==='rejected'?'Reddedildi':'Bekliyor'}</span>
-      </div>
-      <div class="adm-req-info">
-        <div class="adm-req-row"><strong>Teşkilat:</strong>${r.organization||'—'}</div>
-        <div class="adm-req-row"><strong>Sorumlu:</strong>${r.requester_name||'—'}</div>
-        <div class="adm-req-row"><strong>WhatsApp:</strong>${r.requester_phone||'—'}</div>
-        <div class="adm-req-row"><strong>Şifre:</strong><span style="font-family:monospace">${r.requested_password||'—'}</span></div>
-        ${date?`<div class="adm-req-row"><strong>Tarih:</strong>${date}</div>`:''}
-      </div>
-      ${isPending?`<div class="adm-req-actions">
-        <button class="btn-approve" onclick="approveRequest('${r.id}','${(r.city_name||'').replace(/'/g,"\\'")}','${(r.organization||'').replace(/'/g,"\\'")}','${(r.requested_password||'').replace(/'/g,"\\'")}')">✓ Onayla</button>
-        <button class="btn-reject" onclick="rejectRequest('${r.id}')">✕ Reddet</button>
-      </div>`:''}
-    </div>`;
-  }).join('');
-}
-
-function makeSlug(str){
-  return str.toLowerCase()
-    .replace(/ğ/g,'g').replace(/ü/g,'u').replace(/ş/g,'s').replace(/ı/g,'i').replace(/ö/g,'o').replace(/ç/g,'c')
-    .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
-}
-
-function orgToKategorie(org){
-  if(org.includes('(AT)'))return'AT';
-  if(org.includes('(GT)'))return'GT';
-  if(org.includes('(KT)'))return'KT';
-  if(org.includes('(KGT)'))return'KGT';
-  return'AT';
-}
-
-async function approveRequest(id,cityName,org,pw){
-  if(!confirm(`"${cityName}" şehrini onaylamak istediğinizden emin misiniz?`))return;
-  showLoading('Onaylanıyor...');
-  try{
-    const {error:insErr}=await sb.from('gruppen').insert({
-      name:cityName,
-      slug:makeSlug(cityName),
-      kategorie:orgToKategorie(org),
-      password_hash:pw
-    });
-    if(insErr)throw insErr;
-    const {error:upErr}=await sb.from('city_requests').update({status:'approved'}).eq('id',id);
-    if(upErr)throw upErr;
-    hideLoading();
-    toast(`"${cityName}" başarıyla oluşturuldu!`);
-    loadAdminRequests();
-  }catch(e){
-    hideLoading();
-    toast('Hata: '+(e.message||e),true);
-  }
-}
-
-async function rejectRequest(id){
-  if(!confirm('Bu talebi reddetmek istediğinizden emin misiniz?'))return;
-  showLoading('Reddediliyor...');
-  try{
-    const {error}=await sb.from('city_requests').update({status:'rejected'}).eq('id',id);
-    if(error)throw error;
-    hideLoading();
-    toast('Talep reddedildi.');
-    loadAdminRequests();
-  }catch(e){
-    hideLoading();
-    toast('Hata: '+(e.message||e),true);
-  }
-}
-
-let _adminAllCities=[],_adminCityFilter='all',_editingCityId=null;
-
-function openEditCity(id,name,pw,memberPw){
-  _editingCityId=id;
-  $('edit-city-title').textContent=name;
-  $('edit-city-sub').textContent='Şifreleri güncelleyin';
-  $('edit-city-pw').value=pw||'';
-  $('edit-city-member-pw').value=memberPw||'';
-  $('modal-edit-city').classList.add('op');
-}
-
-async function saveEditCity(){
-  const pw=$('edit-city-pw').value.trim();
-  const memberPw=$('edit-city-member-pw').value.trim();
-  if(!pw){toast('Başkan şifresi boş olamaz.',true);return}
-  showLoading('Kaydediliyor...');
-  try{
-    const update={password_hash:pw,member_password:memberPw||null};
-    const {error}=await sb.from('gruppen').update(update).eq('id',_editingCityId);
-    if(error)throw error;
-    hideLoading();
-    $('modal-edit-city').classList.remove('op');
-    toast('Şifreler güncellendi.');
-    loadAdminCities();
-  }catch(e){
-    hideLoading();
-    toast('Hata: '+(e.message||e),true);
-  }
-}
-
-async function deleteCity(id,name){
-  if(!confirm(`"${name}" şehrini kalıcı olarak silmek istediğinizden emin misiniz?\n\nBu işlem geri alınamaz!`))return;
-  showLoading('Siliniyor...');
-  try{
-    const {error}=await sb.from('gruppen').delete().eq('id',id);
-    if(error)throw error;
-    hideLoading();
-    toast(`"${name}" silindi.`);
-    loadAdminCities();
-  }catch(e){
-    hideLoading();
-    toast('Hata: '+(e.message||e),true);
-  }
-}
-
-async function loadAdminCities(){
-  const list=$('admin-cities-list');
-  list.innerHTML='<div class="adm-empty"><strong>Yükleniyor...</strong></div>';
-  try{
-    const {data,error}=await sb.from('gruppen').select('id,name,kategorie,password_hash,member_password,created_at').order('kategorie').order('name');
-    if(error)throw error;
-    _adminAllCities=data||[];
-    renderAdminCities();
-  }catch(e){
-    list.innerHTML=`<div class="adm-empty"><strong>Hata</strong>${e.message}</div>`;
-  }
-}
-
-function filterAdminCities(kat,btn){
-  _adminCityFilter=kat;
-  document.querySelectorAll('#adm-city-filter-bar .adm-filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderAdminCities();
-}
-
-const KAT_COLORS={AT:'#059669',GT:'#2563eb',KT:'#7c3aed',KGT:'#db2777'};
-
-function renderAdminCities(){
-  const list=$('admin-cities-list');
-  const all=_adminAllCities;
-  const filtered=_adminCityFilter==='all'?all:all.filter(c=>c.kategorie===_adminCityFilter);
-  if(!filtered.length){
-    list.innerHTML='<div class="adm-empty"><strong>Kayıt yok</strong>Bu kategoride şehir bulunamadı.</div>';
-    return;
-  }
-  const total=filtered.length;
-  list.innerHTML=`<div style="font-size:.78rem;color:var(--txt3);margin-bottom:10px;font-weight:600">${total} şehir</div>`+
-  filtered.map(c=>{
-    const color=KAT_COLORS[c.kategorie]||'#059669';
-    const initials=(c.name||'?').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-    const esc2=s=>(s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-    return `<div class="adm-city-row" style="flex-wrap:wrap;gap:10px">
-      <div class="adm-city-avatar" style="background:${color}">${initials}</div>
-      <div class="adm-city-info">
-        <div class="adm-city-name">${c.name||'—'}</div>
-        <div class="adm-city-meta">${c.kategorie||'—'}${c.member_password?' · Üye şifresi var':''}</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
-        <div class="adm-city-pw">${c.password_hash||'—'}</div>
-        <button onclick="openEditCity('${c.id}','${esc2(c.name)}','${esc2(c.password_hash)}','${esc2(c.member_password)}')" style="width:32px;height:32px;border:none;border-radius:8px;background:#f1f5f9;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--txt2)" title="Düzenle">✏️</button>
-        <button onclick="deleteCity('${c.id}','${esc2(c.name)}')" style="width:32px;height:32px;border:none;border-radius:8px;background:#fee2e2;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#b91c1c" title="Sil">🗑️</button>
-      </div>
-    </div>`;
-  }).join('');
-}
+function applyRoleUI(){document.body.classList.toggle('role-uye',currentRole==='uye');};
 
 
 (async()=>{
