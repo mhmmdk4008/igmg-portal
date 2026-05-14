@@ -34,6 +34,8 @@ button{font-family:inherit}
 .conn-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite}
 .conn-dot.off{background:#ef4444}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.screen.active{animation:fadeIn .18s ease-out}
 
 /* SCREEN 1: KATEGORI */
 .scr-kat{min-height:100vh;background:linear-gradient(180deg,#fafafa 0%,#f0fdf4 100%);padding:0;display:flex;flex-direction:column;position:relative;overflow:hidden}
@@ -804,6 +806,7 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
         <div class="pre">Yönetim Panosu</div>
         <h1>Hoş geldiniz</h1>
       </div>
+      <div id="next-meeting-info" style="background:var(--surf);border:1.5px solid var(--bord);border-radius:var(--rad);padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px"></div>
       <div class="menu-buttons">
         <button class="menu-btn" onclick="navTo('yonetim')">
           <div class="menu-btn-icon" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0)">
@@ -845,7 +848,7 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
           </div>
           <div class="menu-btn-arrow">›</div>
         </button>
-        <button class="menu-btn" onclick="navTo('cezalar')">
+        <button class="menu-btn" onclick="navTo('cezalar');openCezaScreen()">
           <div class="menu-btn-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca)">
             <svg fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
           </div>
@@ -909,16 +912,8 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
         <h3>Yöneticiler</h3>
         <button id="yonetim-add-btn" class="btn bp bsm" onclick="openModal('add-member')">+ Yeni Ekle</button>
       </div>
+      <input type="text" class="if" placeholder="🔍 Yönetici ara..." style="margin-bottom:10px" oninput="filterList('members-list-wrap',this.value)">
       <div id="members-list-wrap"></div>
-      <div class="ceza-rules-card">
-        <h3>Ceza Kuralları</h3>
-        <div class="ceza-row"><span>Toplantıya gecikilmesi</span><span class="ceza-amt">5 €</span></div>
-        <div class="ceza-row"><span>Mazeretsiz gelmemezlik</span><span class="ceza-amt">15 €</span></div>
-        <div class="ceza-row"><span>Dosya unutulması</span><span class="ceza-amt">2 €</span></div>
-        <div class="ceza-row"><span>Toplantıda Telefon Çalması</span><span class="ceza-amt">5 €</span></div>
-        <div class="ceza-row"><span>Kur'an-ı Kerim okumama</span><span class="ceza-amt">50 €</span></div>
-        <p class="ceza-note">Vakit Namazından sonraki toplantı, Vakit Namazının Farzı ile başlamaktadır.</p>
-      </div>
     </div>
     <div class="support-footer">
       <button class="support-trigger" onclick="toggleSupport(this)">
@@ -995,6 +990,7 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
         <h3>Bu Aydaki Etkinlikler</h3>
         <button class="btn bp bsm" onclick="openAddEvent()">+ Etkinlik Ekle</button>
       </div>
+      <input type="text" class="if" placeholder="🔍 Etkinlik ara..." style="margin-bottom:10px" oninput="filterList('events-list',this.value)">
       <div id="events-list"></div>
     </div>
     <div class="support-footer">
@@ -1132,6 +1128,7 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
         <h3>Toplantı Listesi</h3>
         <button class="btn bp bsm" onclick="openAddMeeting()">+ Yeni Toplantı</button>
       </div>
+      <input type="text" class="if" placeholder="🔍 Toplantı ara..." style="margin-bottom:10px" oninput="filterList('meetings-list',this.value)">
       <div id="meetings-list"></div>
     </div>
     <div class="support-footer">
@@ -1238,14 +1235,33 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
   <div class="page-wrap">
     <div class="page-content">
       <div id="ceza-locked">
-        <div class="ceza-lock-card">
+        <!-- Şifre henüz belirlenmemiş -->
+        <div class="ceza-lock-card" id="ceza-setup-card" style="display:none">
+          <div class="ceza-lock-icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <h3>Ceza Şifresi Belirle</h3>
+          <p>Bu şube için henüz ceza şifresi belirlenmemiş. Lütfen bir şifre oluşturun.</p>
+          <div class="field" style="text-align:left">
+            <label>Yeni Şifre</label>
+            <input type="password" id="ceza-setup-pw1" class="if" placeholder="Şifre..." autocomplete="new-password">
+          </div>
+          <div class="field" style="text-align:left">
+            <label>Şifre (Tekrar)</label>
+            <input type="password" id="ceza-setup-pw2" class="if" placeholder="Şifre tekrar..." autocomplete="new-password">
+          </div>
+          <div id="ceza-setup-err" style="background:var(--rb);color:var(--r);padding:9px 12px;border-radius:8px;font-size:.78rem;font-weight:500;margin-top:4px;display:none"></div>
+          <button class="btn bp bf" onclick="saveCezaPassword()">Şifre Oluştur</button>
+        </div>
+        <!-- Şifre var, giriş yap -->
+        <div class="ceza-lock-card" id="ceza-unlock-card" style="display:none">
           <div class="ceza-lock-icon">
             <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           </div>
           <h3>Yetkili Erişimi</h3>
           <p>Ceza takibi şifre korumalıdır. Sadece yetkili kişilerin erişimine açıktır.</p>
           <div class="field" style="text-align:left">
-            <label>Yetkili Şifresi</label>
+            <label>Ceza Şifresi</label>
             <input type="password" id="ceza-pw-input" class="if" placeholder="Şifre..." autocomplete="off" onkeydown="if(event.key==='Enter')unlockCeza()">
             <div id="ceza-pw-err" style="background:var(--rb);color:var(--r);padding:9px 12px;border-radius:8px;font-size:.78rem;font-weight:500;margin-top:8px;display:none">Şifre yanlış. Lütfen tekrar deneyin.</div>
           </div>
@@ -1461,6 +1477,21 @@ function hideLoading(){$('loading').classList.remove('show')}
 function toast(msg,err){$('tm').innerHTML=msg;const t=$('tst');t.classList.toggle('err',!!err);t.classList.add('sh');setTimeout(()=>t.classList.remove('sh'),3500)}
 function setScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$('screen-'+id).classList.add('active');window.scrollTo(0,0)}
 function esc(s){return String(s||'').replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]))}
+function updateNextMeetingCard(){
+  const card=$('next-meeting-info');if(!card)return;
+  const today=new Date().toISOString().split('T')[0];
+  const upcoming=(etkinlikler||[]).filter(e=>e.date>=today&&e.title.toLowerCase().includes('toplantı')).sort((a,b)=>a.date.localeCompare(b.date));
+  if(upcoming.length){
+    const d=new Date(upcoming[0].date+'T12:00:00');
+    const fmt=d.toLocaleDateString('tr-TR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    card.innerHTML=`<span style="font-size:1.6rem">📅</span><div><div style="font-size:.72rem;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em">Bir Dahaki Toplantı</div><div style="font-weight:700;color:var(--txt);font-size:.95rem;margin-top:1px">${fmt}</div></div>`;
+  }else{
+    card.innerHTML=`<span style="font-size:1.6rem">📅</span><div><div style="font-size:.72rem;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em">Bir Dahaki Toplantı</div><div style="color:var(--txt3);font-size:.85rem;margin-top:1px">Toplantı tarihi henüz belirlenmedi</div></div>`;
+  }
+}
+function makeSlug(name){return name.toLowerCase().replace(/ş/g,'s').replace(/ç/g,'c').replace(/ğ/g,'g').replace(/ı/g,'i').replace(/ö/g,'o').replace(/ü/g,'u').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'-'+Date.now()}
+function toggleCityPw(id){const el=$('pw-'+id);if(!el)return;const shown=el.dataset.shown==='1';el.textContent=shown?'••••••••':el.dataset.pw||'—';el.dataset.shown=shown?'0':'1'}
+function filterList(containerId,query){const c=$(containerId);if(!c)return;const q=query.toLowerCase().trim();Array.from(c.children).forEach(el=>{el.style.display=!q||el.textContent.toLowerCase().includes(q)?'':'none'})}
 function setConn(ok){document.querySelectorAll('.conn-dot').forEach(d=>d.classList.toggle('off',!ok))}
 
 function saveSession(d){try{localStorage.setItem('ig_session',JSON.stringify(d))}catch(e){}}
@@ -1644,6 +1675,7 @@ async function enterApp(){
     hideLoading();
     setupRealtime();
     setConn(true);
+    updateNextMeetingCard();
     setScreen('menu');
   }catch(e){
     hideLoading();
@@ -2454,9 +2486,45 @@ async function loadCezalar(){
   cezalar=data||[];
 }
 
+function openCezaScreen(){
+  cezaUnlocked=false;
+  $('ceza-locked').style.display='block';
+  $('ceza-unlocked').style.display='none';
+  if(currentSube.ceza_password){
+    $('ceza-setup-card').style.display='none';
+    $('ceza-unlock-card').style.display='block';
+    $('ceza-pw-input').value='';
+    $('ceza-pw-err').style.display='none';
+  }else{
+    $('ceza-setup-card').style.display='block';
+    $('ceza-unlock-card').style.display='none';
+    $('ceza-setup-pw1').value='';$('ceza-setup-pw2').value='';
+    $('ceza-setup-err').style.display='none';
+  }
+}
+async function saveCezaPassword(){
+  const p1=$('ceza-setup-pw1').value.trim();
+  const p2=$('ceza-setup-pw2').value.trim();
+  const err=$('ceza-setup-err');
+  err.style.display='none';
+  if(!p1){err.textContent='Şifre boş olamaz.';err.style.display='block';return}
+  if(p1!==p2){err.textContent='Şifreler eşleşmiyor.';err.style.display='block';return}
+  if(p1.length<3){err.textContent='Şifre en az 3 karakter olmalı.';err.style.display='block';return}
+  showLoading('Kaydediliyor...');
+  try{
+    const {error}=await sb.from('gruppen').update({ceza_password:p1}).eq('id',currentSube.id);
+    if(error)throw error;
+    currentSube.ceza_password=p1;
+    hideLoading();
+    cezaUnlocked=true;
+    $('ceza-locked').style.display='none';
+    $('ceza-unlocked').style.display='block';
+    renderCezalar();
+  }catch(e){hideLoading();toast('Hata: '+e.message,true)}
+}
 function unlockCeza(){
   const pw=$('ceza-pw-input').value;
-  if(pw===CEZA_PW){
+  if(pw===(currentSube.ceza_password||'')){
     cezaUnlocked=true;
     $('ceza-pw-input').value='';
     $('ceza-pw-err').style.display='none';
@@ -2637,9 +2705,11 @@ function onLogoTap(){
   }
 }
 
-function adminLogin(){
+async function adminLogin(){
   const pw=$('adminPwInput').value;
-  if(pw==='igmg-super-2026'){
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(pw));
+  const hash=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  if(hash==='240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9'){
     $('adminPwErr').style.display='none';
     setScreen('admin');
     switchAdminTab('talepler');
@@ -2706,7 +2776,7 @@ async function approveRequest(id,name,org,pw){
   try{
     const katMap={'Ana Teşkilat (AT)':'AT','Gençlik Teşkilatı (GT)':'GT','Kadınlar Teşkilatı (KT)':'KT','Kadınlar Gençlik Teşkilatı (KGT)':'KGT'};
     const kat=katMap[org]||'AT';
-    const {error:e1}=await sb.from('gruppen').insert({name,kategorie:kat,password_hash:pw});
+    const {error:e1}=await sb.from('gruppen').insert({name,slug:makeSlug(name),kategorie:kat,password_hash:pw});
     if(e1)throw e1;
     const {error:e2}=await sb.from('city_requests').update({status:'approved'}).eq('id',id);
     if(e2)throw e2;
@@ -2753,7 +2823,10 @@ function renderAdminCities(){
       <div style="flex:1;min-width:0">
         <div class="adm-city-name">${c.name}</div>
         <div class="adm-city-meta">${c.kategorie||'—'}${c.member_password?' · Üye şifresi var':''}</div>
-        <div class="adm-city-pw">${c.password_hash||'—'}</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:2px">
+          <div class="adm-city-pw" id="pw-${c.id}" data-pw="${esc2(c.password_hash||'')}" data-shown="0">••••••••</div>
+          <button onclick="toggleCityPw('${c.id}')" style="background:none;border:none;cursor:pointer;padding:2px;color:var(--txt3);font-size:.75rem">👁</button>
+        </div>
       </div>
       <div style="display:flex;gap:6px;flex-shrink:0;margin-left:10px">
         <button onclick="openEditCity('${c.id}','${esc2(c.name)}','${esc2(c.password_hash)}','${esc2(c.member_password||'')}')" style="width:32px;height:32px;border:none;border-radius:8px;background:#f1f5f9;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center" title="Düzenle">✏️</button>
@@ -2807,7 +2880,7 @@ async function saveNewCity(){
   const katId=kats&&kats[0]?kats[0].id:null;
   showLoading('Şehir ekleniyor...');
   try{
-    const {error}=await sb.from('gruppen').insert({name,kategorie_id:katId,password_hash:pw,member_password:memberPw||null});
+    const {error}=await sb.from('gruppen').insert({name,slug:makeSlug(name),kategorie_id:katId,password_hash:pw,member_password:memberPw||null});
     if(error)throw error;
     hideLoading();closeModal('add-city');
     toast(name+' başarıyla eklendi.');
