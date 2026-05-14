@@ -188,7 +188,7 @@ button{font-family:inherit}
 .support-wa-btn svg{width:14px;height:14px}
 
 
-.role-uye .member-actions{display:none !important}.role-uye #yonetim-add-btn{display:none !important}.role-uye #bilgi-next-meeting-btn{display:none !important}.role-uye #bilgi-add-note-btn{display:none !important}
+.role-uye .member-actions{display:none !important}.role-uye #yonetim-add-btn{display:none !important}.role-uye #bilgi-next-meeting-btn{display:none !important}.role-uye #bilgi-add-note-btn{display:none !important}.role-uye #menu-changepw-btn{display:none !important}
 
 /* === SECTION & LIST CARDS === */
 .section-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
@@ -646,6 +646,7 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
     </div>
     <div class="app-header-r">
       <span class="conn-dot" id="connDot2"></span>
+      <button id="menu-changepw-btn" class="btn bg bsm" onclick="openChangePwModal()" style="font-size:.78rem">🔑 Şifre</button>
       <button class="btn bg bsm" onclick="logout()">Çıkış</button>
     </div>
   </header>
@@ -1258,6 +1259,28 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
   </div>
 </div>
 
+<!-- CHANGE PASSWORD MODAL -->
+<div class="mbg" id="modal-change-pw">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-h"><h3>Şifre Değiştir</h3><div class="sub">Hangi şifreyi değiştirmek istiyorsunuz?</div></div>
+    <div class="modal-body">
+      <div style="display:flex;gap:8px;margin-bottom:16px">
+        <button id="cpw-type-baskan" class="btn bp" style="flex:1;font-size:.84rem" onclick="setCpwType('baskan')">Başkan Şifresi</button>
+        <button id="cpw-type-uye" class="btn bg" style="flex:1;font-size:.84rem;border:1.5px solid var(--bord)" onclick="setCpwType('uye')">Üye Şifresi</button>
+      </div>
+      <div id="cpw-current-field" class="field"><label>Mevcut Başkan Şifresi</label><input type="password" id="cpw-current" class="if" placeholder="Mevcut şifreniz..." autocomplete="off"></div>
+      <div class="field"><label id="cpw-new-label">Yeni Başkan Şifresi</label><input type="password" id="cpw-new" class="if" placeholder="Yeni şifre..." autocomplete="new-password"></div>
+      <div class="field"><label>Yeni Şifre (Tekrar)</label><input type="password" id="cpw-confirm" class="if" placeholder="Yeni şifre tekrar..." autocomplete="new-password"></div>
+      <div id="cpw-err" class="le"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn bo" onclick="closeModal('change-pw')">İptal</button>
+      <button class="btn bp" onclick="changePassword()">Değiştir</button>
+    </div>
+  </div>
+</div>
+
 
 <div class="loading-screen" id="loading">
   <div class="loading-box"><div class="spin"></div><span id="loadingMsg">Yükleniyor...</span></div>
@@ -1292,9 +1315,9 @@ function setScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classLi
 function esc(s){return String(s||'').replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]))}
 function setConn(ok){document.querySelectorAll('.conn-dot').forEach(d=>d.classList.toggle('off',!ok))}
 
-function saveSession(d){try{sessionStorage.setItem('ig_session',JSON.stringify(d))}catch(e){}}
-function loadSession(){try{return JSON.parse(sessionStorage.getItem('ig_session')||'null')}catch(e){return null}}
-function clearSession(){try{sessionStorage.removeItem('ig_session')}catch(e){}}
+function saveSession(d){try{localStorage.setItem('ig_session',JSON.stringify(d))}catch(e){}}
+function loadSession(){try{return JSON.parse(localStorage.getItem('ig_session')||'null')}catch(e){return null}}
+function clearSession(){try{localStorage.removeItem('ig_session')}catch(e){}}
 
 function toggleSupport(trigger){
   const container=trigger.closest('.page-wrap, .scr-kat-inner, .scr-pw > div');
@@ -1396,6 +1419,50 @@ async function pwLogin(){
     currentSube=data;currentRole=role;
     saveSession({sube_id:data.id,kat:currentKat.code,role});
     hideLoading();enterApp();
+  }catch(e){hideLoading();toast('Hata: '+(e.message||'Bilinmeyen'),true)}
+}
+
+let cpwType='baskan';
+function setCpwType(type){
+  cpwType=type;
+  const isBaskan=type==='baskan';
+  $('cpw-type-baskan').className=isBaskan?'btn bp':'btn bg';
+  $('cpw-type-baskan').style.border=isBaskan?'none':'1.5px solid var(--bord)';
+  $('cpw-type-uye').className=isBaskan?'btn bg':'btn bp';
+  $('cpw-type-uye').style.border=isBaskan?'1.5px solid var(--bord)':'none';
+  $('cpw-current-field').style.display=isBaskan?'block':'none';
+  $('cpw-new-label').textContent=isBaskan?'Yeni Başkan Şifresi':'Yeni Üye Şifresi';
+  $('cpw-err').style.display='none';
+}
+function openChangePwModal(){
+  $('cpw-current').value='';$('cpw-new').value='';$('cpw-confirm').value='';
+  setCpwType('baskan');
+  openModal('change-pw');
+}
+async function changePassword(){
+  const nw=$('cpw-new').value.trim();
+  const conf=$('cpw-confirm').value.trim();
+  const errEl=$('cpw-err');
+  errEl.style.display='none';
+  if(!nw||!conf){errEl.textContent='Yeni şifre alanlarını doldurun.';errEl.style.display='block';return}
+  if(nw!==conf){errEl.textContent='Yeni şifreler eşleşmiyor.';errEl.style.display='block';return}
+  if(nw.length<4){errEl.textContent='Yeni şifre en az 4 karakter olmalı.';errEl.style.display='block';return}
+  if(cpwType==='baskan'){
+    const cur=$('cpw-current').value.trim();
+    if(!cur){errEl.textContent='Mevcut başkan şifresini girin.';errEl.style.display='block';return}
+    if(cur!==currentSube.password_hash){errEl.textContent='Mevcut başkan şifresi yanlış.';errEl.style.display='block';return}
+  }
+  showLoading('Şifre güncelleniyor...');
+  try{
+    const update=cpwType==='baskan'?{password_hash:nw}:{member_password:nw};
+    const {error}=await sb.from('gruppen').update(update).eq('id',currentSube.id);
+    if(error)throw error;
+    if(cpwType==='baskan')currentSube.password_hash=nw;
+    else currentSube.member_password=nw;
+    saveSession({sube_id:currentSube.id,kat:currentKat.code,role:currentRole});
+    hideLoading();closeModal('change-pw');
+    $('cpw-current').value='';$('cpw-new').value='';$('cpw-confirm').value='';
+    toast((cpwType==='baskan'?'Başkan':'Üye')+' şifresi başarıyla güncellendi.');
   }catch(e){hideLoading();toast('Hata: '+(e.message||'Bilinmeyen'),true)}
 }
 
