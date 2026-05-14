@@ -452,6 +452,25 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
 .req-card .field{margin-bottom:14px}
 .req-card .field label{display:block;font-size:.78rem;font-weight:700;color:var(--txt2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
 .version{position:fixed;bottom:4px;left:8px;font-size:10px;color:var(--txt3);opacity:.4;font-family:ui-monospace,monospace;pointer-events:none;z-index:10}
+.adm-tab-btn{flex:1;padding:11px 8px;border:none;background:transparent;border-bottom:3px solid transparent;font-size:.84rem;font-weight:600;color:var(--txt2);cursor:pointer;transition:all .15s;font-family:inherit}
+.adm-tab-active{color:var(--p);border-bottom-color:var(--p)}
+.adm-filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;padding-top:8px}
+.adm-filter-btn{background:#f1f5f9;border:none;border-radius:50px;padding:6px 14px;font-size:.78rem;font-weight:600;color:var(--txt2);cursor:pointer;transition:all .15s;font-family:inherit}
+.adm-filter-btn.active{background:var(--p);color:#fff}
+.adm-req-card{background:var(--surf);border:1px solid var(--bord);border-radius:var(--rad-lg);padding:16px;margin-bottom:10px;box-shadow:var(--shadow-sm)}
+.adm-req-title{font-size:.95rem;font-weight:700;color:var(--txt);margin-bottom:8px}
+.adm-req-row{font-size:.82rem;color:var(--txt2);margin-bottom:4px}
+.adm-req-row strong{color:var(--txt);font-weight:600}
+.adm-req-actions{display:flex;gap:8px;margin-top:12px}
+.btn-approve{background:#dcfce7;color:#059669;border:none;border-radius:8px;padding:8px 14px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s}
+.btn-approve:hover{background:#bbf7d0}
+.btn-reject{background:#fee2e2;color:#dc2626;border:none;border-radius:8px;padding:8px 14px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s}
+.btn-reject:hover{background:#fecaca}
+.adm-city-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--bord-l)}
+.adm-city-row:last-child{border-bottom:none}
+.adm-city-name{font-size:.92rem;font-weight:700;color:var(--txt)}
+.adm-city-meta{font-size:.76rem;color:var(--txt3);margin-top:2px}
+.adm-city-pw{font-size:.8rem;font-family:monospace;color:var(--p);background:var(--pp);padding:2px 8px;border-radius:6px;margin-top:4px;display:inline-block}
 </style>
 </head>
 <body>
@@ -461,7 +480,7 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
   <div class="scr-kat">
     <div class="scr-kat-inner">
       <div class="kat-hero">
-        <div style="font-size:72px;font-weight:900;color:#1a1a1a;letter-spacing:-.03em;line-height:1;margin-bottom:14px;font-family:'Inter',sans-serif" id="igmg-logo-text">IGMG</div>
+        <div style="font-size:72px;font-weight:900;color:#1a1a1a;letter-spacing:-.03em;line-height:1;margin-bottom:14px;font-family:'Inter',sans-serif;cursor:default;user-select:none" id="igmg-logo-text" onclick="onLogoTap()">IGMG</div>
         <h1>Yönetim Portalı</h1>
         <p>Lütfen teşkilatınızı seçin</p>
       </div>
@@ -525,6 +544,107 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
         <div style="height:6px"></div>
         <button class="btn bp bf" onclick="submitCityRequest()">Talep Gönder</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: ADMIN LOGIN -->
+<div id="screen-admin-login" class="screen">
+  <header class="app-header">
+    <div class="app-header-l">
+      <button class="back-btn" onclick="setScreen('kategori')">‹</button>
+      <div class="app-header-info">
+        <div class="app-header-pretitle">Sistem</div>
+        <div class="app-header-title">Yönetim Paneli</div>
+      </div>
+    </div>
+    <div class="app-header-r"></div>
+  </header>
+  <div style="min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;padding:24px">
+    <div class="pw-card" style="max-width:360px;width:100%">
+      <h2 style="text-align:center;margin-bottom:4px">Süper Admin</h2>
+      <p class="sub" style="text-align:center;margin-bottom:20px">Devam etmek için şifreyi girin</p>
+      <input type="password" id="adminPwInput" class="if" placeholder="Şifre..." autocomplete="off" onkeydown="if(event.key==='Enter')adminLogin()">
+      <div id="adminPwErr" class="le" style="margin-top:10px">Hatalı şifre.</div>
+      <div style="height:14px"></div>
+      <button class="btn bp bf" onclick="adminLogin()">Giriş Yap</button>
+      <div style="height:8px"></div>
+      <button class="btn bg bf" onclick="setScreen('kategori')">← Geri</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: ADMIN PANEL -->
+<div id="screen-admin" class="screen">
+  <header class="app-header">
+    <div class="app-header-l">
+      <button class="back-btn" onclick="setScreen('kategori')">‹</button>
+      <div class="app-header-info">
+        <div class="app-header-pretitle">Sistem</div>
+        <div class="app-header-title">Yönetim Paneli</div>
+      </div>
+    </div>
+    <div class="app-header-r"></div>
+  </header>
+  <div style="background:#fff;border-bottom:1px solid var(--bord);display:flex;padding:0 16px">
+    <button id="adm-tab-talepler" class="adm-tab-btn adm-tab-active" onclick="switchAdminTab('talepler')">Şehir Talepleri</button>
+    <button id="adm-tab-sehirler" class="adm-tab-btn" onclick="switchAdminTab('sehirler')">Şehirler</button>
+  </div>
+  <div class="page-wrap" style="max-width:720px">
+    <div class="page-content">
+      <div id="adm-panel-talepler">
+        <div class="page-h" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:8px">
+          <div><h2>Şehir Talepleri</h2><p>Gelen yeni şehir başvuruları</p></div>
+          <button class="btn bg bsm" onclick="loadAdminRequests()">↻ Yenile</button>
+        </div>
+        <div class="adm-filter-bar">
+          <button class="adm-filter-btn active" onclick="filterAdminRequests('pending',this)">Bekleyen</button>
+          <button class="adm-filter-btn" onclick="filterAdminRequests('approved',this)">Onaylanan</button>
+          <button class="adm-filter-btn" onclick="filterAdminRequests('rejected',this)">Reddedilen</button>
+          <button class="adm-filter-btn" onclick="filterAdminRequests('all',this)">Tümü</button>
+        </div>
+        <div id="admin-requests-list"></div>
+      </div>
+      <div id="adm-panel-sehirler" style="display:none">
+        <div class="page-h" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:8px">
+          <div><h2>Tüm Şehirler</h2><p>Sistemdeki tüm şubeler</p></div>
+          <button class="btn bg bsm" onclick="loadAdminCities()">↻ Yenile</button>
+        </div>
+        <div class="adm-filter-bar">
+          <button class="adm-filter-btn active" onclick="filterAdminCities('all',this)">Tümü</button>
+          <button class="adm-filter-btn" onclick="filterAdminCities('AT',this)">AT</button>
+          <button class="adm-filter-btn" onclick="filterAdminCities('GT',this)">GT</button>
+          <button class="adm-filter-btn" onclick="filterAdminCities('KT',this)">KT</button>
+          <button class="adm-filter-btn" onclick="filterAdminCities('KGT',this)">KGT</button>
+        </div>
+        <div id="admin-cities-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN EDIT CITY MODAL -->
+<div class="mbg" id="modal-edit-city">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-h">
+      <h3 id="edit-city-title">Şehir Düzenle</h3>
+      <div class="sub" id="edit-city-sub">Şifreleri güncelleyin</div>
+    </div>
+    <input type="hidden" id="edit-city-id">
+    <div class="modal-body">
+      <div class="field">
+        <label>Başkan Şifresi</label>
+        <input type="text" id="edit-city-pw" class="if" placeholder="Başkan şifresi...">
+      </div>
+      <div class="field">
+        <label>Üye Şifresi <span style="font-weight:400;color:var(--txt3)">(opsiyonel)</span></label>
+        <input type="text" id="edit-city-member-pw" class="if" placeholder="Üye şifresi (boş bırakılabilir)...">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn bo" onclick="closeModal('edit-city')">İptal</button>
+      <button class="btn bp" onclick="saveEditCity()">Kaydet</button>
     </div>
   </div>
 </div>
@@ -2473,6 +2593,182 @@ function applyRoleUI(){document.body.classList.toggle('role-uye',currentRole==='
     }catch(e){console.error('Resume failed',e)}
   }
 })();
+
+/* ======== SUPERADMIN ======== */
+let adminTapCount=0,adminTapTimer=null;
+let adminRequests=[],allCities=[],currentReqFilter='pending',currentCityFilter='all';
+
+function onLogoTap(){
+  adminTapCount++;
+  clearTimeout(adminTapTimer);
+  adminTapTimer=setTimeout(()=>{adminTapCount=0},1800);
+  if(adminTapCount>=5){
+    adminTapCount=0;
+    $('adminPwInput').value='';
+    $('adminPwErr').style.display='none';
+    setScreen('admin-login');
+  }
+}
+
+function adminLogin(){
+  const pw=$('adminPwInput').value;
+  if(pw==='igmg-super-2026'){
+    $('adminPwErr').style.display='none';
+    setScreen('admin');
+    switchAdminTab('talepler');
+    loadAdminRequests();
+  } else {
+    $('adminPwErr').style.display='block';
+    $('adminPwInput').value='';
+    $('adminPwInput').focus();
+  }
+}
+
+function switchAdminTab(tab){
+  $('adm-tab-talepler').classList.toggle('adm-tab-active',tab==='talepler');
+  $('adm-tab-sehirler').classList.toggle('adm-tab-active',tab==='sehirler');
+  $('adm-panel-talepler').style.display=tab==='talepler'?'block':'none';
+  $('adm-panel-sehirler').style.display=tab==='sehirler'?'block':'none';
+  if(tab==='sehirler')loadAdminCities();
+}
+
+function esc2(s){return(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'")}
+
+async function loadAdminRequests(){
+  $('admin-requests-list').innerHTML='<div class="empty-card"><strong>Yükleniyor...</strong></div>';
+  try{
+    const {data,error}=await sb.from('city_requests').select('*').order('created_at',{ascending:false});
+    if(error)throw error;
+    adminRequests=data||[];
+    renderAdminRequests();
+  }catch(e){$('admin-requests-list').innerHTML='<div class="empty-card"><strong>Hata</strong><small>'+e.message+'</small></div>'}
+}
+
+function filterAdminRequests(f,btn){
+  currentReqFilter=f;
+  document.querySelectorAll('#adm-panel-talepler .adm-filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAdminRequests();
+}
+
+function renderAdminRequests(){
+  const list=currentReqFilter==='all'?adminRequests:adminRequests.filter(r=>r.status===currentReqFilter);
+  if(!list.length){
+    $('admin-requests-list').innerHTML='<div class="empty-card"><strong>Kayıt yok</strong></div>';return;
+  }
+  const statusLabel={pending:'⏳ Bekliyor',approved:'✅ Onaylandı',rejected:'❌ Reddedildi'};
+  $('admin-requests-list').innerHTML=list.map(r=>`
+    <div class="adm-req-card">
+      <div class="adm-req-title">${r.city_name||'—'}</div>
+      <div class="adm-req-row"><strong>Teşkilat:</strong> ${r.organization||'—'}</div>
+      <div class="adm-req-row"><strong>Sorumlu:</strong> ${r.requester_name||'—'}</div>
+      <div class="adm-req-row"><strong>Telefon:</strong> ${r.requester_phone||'—'}</div>
+      <div class="adm-req-row"><strong>Şifre:</strong> <span style="font-family:monospace">${r.requested_password||'—'}</span></div>
+      <div class="adm-req-row"><strong>Durum:</strong> ${statusLabel[r.status]||r.status}</div>
+      <div class="adm-req-row" style="font-size:.74rem;color:var(--txt3)">${new Date(r.created_at).toLocaleDateString('tr-TR')}</div>
+      ${r.status==='pending'?`<div class="adm-req-actions">
+        <button class="btn-approve" onclick="approveRequest('${r.id}','${esc2(r.city_name)}','${esc2(r.organization)}','${esc2(r.requested_password)}')">✓ Onayla</button>
+        <button class="btn-reject" onclick="rejectRequest('${r.id}')">✗ Reddet</button>
+      </div>`:''}
+    </div>`).join('');
+}
+
+async function approveRequest(id,name,org,pw){
+  if(!confirm(name+' şehrini onaylıyor musunuz?'))return;
+  showLoading('Onaylanıyor...');
+  try{
+    const katMap={'Ana Teşkilat (AT)':'AT','Gençlik Teşkilatı (GT)':'GT','Kadınlar Teşkilatı (KT)':'KT','Kadınlar Gençlik Teşkilatı (KGT)':'KGT'};
+    const kat=katMap[org]||'AT';
+    const {error:e1}=await sb.from('gruppen').insert({name,kategorie:kat,password_hash:pw});
+    if(e1)throw e1;
+    const {error:e2}=await sb.from('city_requests').update({status:'approved'}).eq('id',id);
+    if(e2)throw e2;
+    hideLoading();toast(name+' onaylandı ve eklendi.');
+    loadAdminRequests();
+  }catch(e){hideLoading();toast('Hata: '+e.message,true)}
+}
+
+async function rejectRequest(id){
+  if(!confirm('Bu talebi reddetmek istediğinizden emin misiniz?'))return;
+  showLoading('Reddediliyor...');
+  try{
+    const {error}=await sb.from('city_requests').update({status:'rejected'}).eq('id',id);
+    if(error)throw error;
+    hideLoading();toast('Talep reddedildi.');
+    loadAdminRequests();
+  }catch(e){hideLoading();toast('Hata: '+e.message,true)}
+}
+
+async function loadAdminCities(){
+  $('admin-cities-list').innerHTML='<div class="empty-card"><strong>Yükleniyor...</strong></div>';
+  try{
+    const {data,error}=await sb.from('gruppen').select('id,name,kategorie,password_hash,member_password,created_at').order('kategorie').order('name');
+    if(error)throw error;
+    allCities=data||[];
+    renderAdminCities();
+  }catch(e){$('admin-cities-list').innerHTML='<div class="empty-card"><strong>Hata</strong><small>'+e.message+'</small></div>'}
+}
+
+function filterAdminCities(f,btn){
+  currentCityFilter=f;
+  document.querySelectorAll('#adm-panel-sehirler .adm-filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAdminCities();
+}
+
+function renderAdminCities(){
+  const list=currentCityFilter==='all'?allCities:allCities.filter(c=>c.kategorie===currentCityFilter);
+  if(!list.length){
+    $('admin-cities-list').innerHTML='<div class="empty-card"><strong>Şehir yok</strong></div>';return;
+  }
+  $('admin-cities-list').innerHTML='<div class="list-card">'+list.map(c=>`
+    <div class="adm-city-row">
+      <div style="flex:1;min-width:0">
+        <div class="adm-city-name">${c.name}</div>
+        <div class="adm-city-meta">${c.kategorie||'—'}${c.member_password?' · Üye şifresi var':''}</div>
+        <div class="adm-city-pw">${c.password_hash||'—'}</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-shrink:0;margin-left:10px">
+        <button onclick="openEditCity('${c.id}','${esc2(c.name)}','${esc2(c.password_hash)}','${esc2(c.member_password||'')}')" style="width:32px;height:32px;border:none;border-radius:8px;background:#f1f5f9;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center" title="Düzenle">✏️</button>
+        <button onclick="deleteCity('${c.id}','${esc2(c.name)}')" style="width:32px;height:32px;border:none;border-radius:8px;background:#fee2e2;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center" title="Sil">🗑️</button>
+      </div>
+    </div>`).join('')+'</div>';
+}
+
+function openEditCity(id,name,pw,memberPw){
+  $('edit-city-id').value=id;
+  $('edit-city-title').textContent=name;
+  $('edit-city-sub').textContent='Şifreleri güncelleyin';
+  $('edit-city-pw').value=pw||'';
+  $('edit-city-member-pw').value=memberPw||'';
+  openModal('edit-city');
+}
+
+async function saveEditCity(){
+  const id=$('edit-city-id').value;
+  const pw=$('edit-city-pw').value.trim();
+  const memberPw=$('edit-city-member-pw').value.trim();
+  if(!pw){toast('Başkan şifresi boş olamaz.',true);return}
+  showLoading('Kaydediliyor...');
+  try{
+    const {error}=await sb.from('gruppen').update({password_hash:pw,member_password:memberPw||null}).eq('id',id);
+    if(error)throw error;
+    hideLoading();closeModal('edit-city');
+    toast('Şifreler güncellendi.');
+    loadAdminCities();
+  }catch(e){hideLoading();toast('Hata: '+e.message,true)}
+}
+
+async function deleteCity(id,name){
+  if(!confirm(name+' şehrini silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!'))return;
+  showLoading('Siliniyor...');
+  try{
+    const {error}=await sb.from('gruppen').delete().eq('id',id);
+    if(error)throw error;
+    hideLoading();toast(name+' silindi.');
+    loadAdminCities();
+  }catch(e){hideLoading();toast('Hata: '+e.message,true)}
+}
 </script>
 </body>
 </html>
