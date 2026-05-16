@@ -2746,7 +2746,7 @@ async function submitCityRequest(){
       city_name:name,organization:org,requester_name:contact,requester_phone:phone,requested_password:pw,status:'pending'
     });
     if(error)throw error;
-    fetch('https://api.emailjs.com/api/v1.0/email/send',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({service_id:'service_p3aot3a',template_id:'template_qp1z1eb',user_id:'VSN0roilz0Qs3cNmm',template_params:{city_name:name,org,contact_name:contact,phone,password:pw,name:contact,email:'mkoroglu530@gmail.com'}})}).then(r=>r.text().then(t=>{if(r.ok)toast('E-posta gönderildi.');else toast('E-posta hatası: '+t,true)})).catch(e=>toast('E-posta hatası: '+e.message,true));
+    fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({access_key:'0fef3a20-876c-4d1c-a91a-2eeed412bbcc',subject:'Yeni Şehir Talebi: '+name,from_name:contact,Şehir:name,Teşkilat:org,Sorumlu:contact,Telefon:phone,Şifre:pw})}).then(r=>r.json()).then(d=>{if(d.success)toast('Bildirim gönderildi.');else toast('Bildirim hatası.',true)}).catch(()=>{});
     hideLoading();
     $('req-name').value='';$('req-org').value='';$('req-contact').value='';$('req-phone').value='';$('req-pw').value='';
     toast('Talebiniz iletildi! En kısa sürede dönüş yapılacak.');
