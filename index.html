@@ -1446,7 +1446,7 @@ textarea.if{min-height:80px;resize:vertical;font-family:inherit}
     <div class="modal-body">
       <div style="display:flex;gap:8px;margin-bottom:16px">
         <button id="cpw-type-baskan" class="btn bp" style="flex:1;font-size:.84rem" onclick="setCpwType('baskan')">Başkan Şifresi</button>
-        <button id="cpw-type-uye" class="btn bg" style="flex:1;font-size:.84rem;border:1.5px solid var(--bord)" onclick="setCpwType('uye')">Üye Şifresi</button>
+        <button id="cpw-type-uye" class="btn bg" style="flex:1;font-size:.84rem;border:1.5px solid var(--bord)" onclick="setCpwType('uye')">Yöneticiler Şifresi</button>
       </div>
       <div id="cpw-current-field" class="field"><label>Mevcut Başkan Şifresi</label><input type="password" id="cpw-current" class="if" placeholder="Mevcut şifreniz..." autocomplete="off"></div>
       <div class="field"><label id="cpw-new-label">Yeni Başkan Şifresi</label><input type="password" id="cpw-new" class="if" placeholder="Yeni şifre..." autocomplete="new-password"></div>
@@ -1687,7 +1687,7 @@ function setCpwType(type){
   $('cpw-type-uye').className=isBaskan?'btn bg':'btn bp';
   $('cpw-type-uye').style.border=isBaskan?'1.5px solid var(--bord)':'none';
   $('cpw-current-field').style.display=isBaskan?'block':'none';
-  $('cpw-new-label').textContent=isBaskan?'Yeni Başkan Şifresi':'Yeni Üye Şifresi';
+  $('cpw-new-label').textContent=isBaskan?'Yeni Başkan Şifresi':'Yeni Yöneticiler Şifresi';
   $('cpw-err').style.display='none';
 }
 function openChangePwModal(){
@@ -1718,7 +1718,7 @@ async function changePassword(){
     saveSession({sube_id:currentSube.id,kat:currentKat.code,role:currentRole});
     hideLoading();closeModal('change-pw');
     $('cpw-current').value='';$('cpw-new').value='';$('cpw-confirm').value='';
-    toast((cpwType==='baskan'?'Başkan':'Üye')+' şifresi başarıyla güncellendi.');
+    toast((cpwType==='baskan'?'Başkan':'Yönetici')+' şifresi başarıyla güncellendi.');
   }catch(e){hideLoading();toast('Hata: '+(e.message||'Bilinmeyen'),true)}
 }
 
