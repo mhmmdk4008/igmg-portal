@@ -2746,7 +2746,7 @@ async function submitCityRequest(){
       city_name:name,organization:org,requester_name:contact,requester_phone:phone,requested_password:pw,status:'pending'
     });
     if(error)throw error;
-    fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({access_key:'0fef3a20-876c-4d1c-a91a-2eeed412bbcc',subject:'Yeni Şehir Talebi: '+name,from_name:contact,Şehir:name,Teşkilat:org,Sorumlu:contact,Telefon:phone,Şifre:pw})}).then(r=>r.json()).then(d=>{if(d.success)toast('Bildirim gönderildi.');else toast('Bildirim hatası.',true)}).catch(()=>{});
+    fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({access_key:'0fef3a20-876c-4d1c-a91a-2eeed412bbcc',subject:'Yeni Şehir Talebi: '+name,from_name:contact,Şehir:name,Teşkilat:org,Sorumlu:contact,Telefon:phone,Şifre:pw})}).then(r=>r.json()).then(d=>{if(d.success)toast('Bildirim gönderildi.');else toast('Hata: '+JSON.stringify(d),true)}).catch(e=>toast('Fetch hatası: '+e.message,true));
     hideLoading();
     $('req-name').value='';$('req-org').value='';$('req-contact').value='';$('req-phone').value='';$('req-pw').value='';
     toast('Talebiniz iletildi! En kısa sürede dönüş yapılacak.');
