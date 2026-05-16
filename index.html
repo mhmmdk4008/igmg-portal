@@ -2748,7 +2748,7 @@ async function submitCityRequest(){
       city_name:name,organization:org,requester_name:contact,requester_phone:phone,requested_password:pw,status:'pending'
     });
     if(error)throw error;
-    emailjs.send('service_p3aot3a','template_3o39wjk',{city_name:name,org,contact_name:contact,phone,password:pw}).catch(()=>{});
+    emailjs.send('service_p3aot3a','3o39wjk',{city_name:name,org,contact_name:contact,phone,password:pw,email:'k.muhammed@gmx.net'}).catch(()=>{});
     hideLoading();
     $('req-name').value='';$('req-org').value='';$('req-contact').value='';$('req-phone').value='';$('req-pw').value='';
     toast('Talebiniz iletildi! En kısa sürede dönüş yapılacak.');
