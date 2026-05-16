@@ -7,6 +7,8 @@
 <title>IGMG Yönetim Portalı</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init('VSN0roilz0Qs3cNmm')</script>
 <style>
 :root{--p:#059669;--pd:#047857;--pdd:#064e3b;--pl:#10b981;--pp:#dcfce7;--pps:#ecfdf5;--acc:#b45309;--txt:#0f172a;--txt2:#475569;--txt3:#94a3b8;--bg:#f9fafb;--surf:#fff;--bord:#e5e7eb;--bord2:#cbd5e1;--bord-l:#f1f5f9;--r:#dc2626;--rb:#fef2f2;--wa:#25D366;--rad:12px;--rad-lg:16px;--shadow-sm:0 1px 3px rgba(15,23,42,.05);--shadow-md:0 4px 16px rgba(15,23,42,.06)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -2746,6 +2748,7 @@ async function submitCityRequest(){
       city_name:name,organization:org,requester_name:contact,requester_phone:phone,requested_password:pw,status:'pending'
     });
     if(error)throw error;
+    emailjs.send('service_p3aot3a','template_3o39wjk',{city_name:name,org,contact_name:contact,phone,password:pw}).catch(()=>{});
     hideLoading();
     $('req-name').value='';$('req-org').value='';$('req-contact').value='';$('req-phone').value='';$('req-pw').value='';
     toast('Talebiniz iletildi! En kısa sürede dönüş yapılacak.');
